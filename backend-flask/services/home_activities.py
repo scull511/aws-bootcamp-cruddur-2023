@@ -1,6 +1,12 @@
 from datetime import datetime, timedelta, timezone
+# from opentelemetery import trace
+import logging
+
 class HomeActivities:
   def run():
+  # CLOUDWATCH LOGS
+  # def run(logger):
+    # logger.info("HomeActivities")
     now = datetime.now(timezone.utc).astimezone()
     results = [{
       'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
