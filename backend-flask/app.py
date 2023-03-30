@@ -22,6 +22,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
+
+
 # X-RAY
 from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
@@ -61,6 +63,10 @@ app = Flask(__name__)
 
 # X-RAY
 # XRayMiddleware(app, xray_recorder)
+# HoneyComb ---------
+# Initialize automatic instrumentation with Flask
+FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()
 
 # HONEYCOMB
 # Initialize automatic instrumentation with Flask
@@ -79,15 +85,12 @@ cors = CORS(
 )
 
 # CLOUDWATCH LOGS - ERROR LOGGING
-
-
 # @app.after_request
 # def after_request(response):
 #     timestamp = strftime('[%Y-%b-%d %H:%M]')
 #     LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr,
 #                  request.method, request.scheme, request.full_path, response.status)
 #     return response
-
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -174,7 +177,7 @@ def data_activities():
 
 
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
-@xray_recorder.capture('activities_show')
+# @xray_recorder.capture('activities_show')
 def data_show_activity(activity_uuid):
     data = ShowActivity.run(activity_uuid=activity_uuid)
     return data, 200
