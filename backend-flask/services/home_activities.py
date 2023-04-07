@@ -1,16 +1,18 @@
 from datetime import datetime, timedelta, timezone
-from opentelemetry import trace
-import logging
+# from opentelemetry import trace
+# import logging
 
-tracer = trace.get_tracer("home.activities")
+# tracer = trace.get_tracer("home.activities")
 
 class HomeActivities:
   def run():
+    now = datetime.now(timezone.utc).astimezone()
+    
     # HONEYCOMB
-    with tracer.start_as_current_span("home-activites-mock-data"):
-      span = trace.get_current_span()
-      now = datetime.now(timezone.utc).astimezone()
-      span.set_attribute("app.now", now.isoformat())
+    # with tracer.start_as_current_span("home-activites-mock-data"):
+    #   span = trace.get_current_span()
+    #   now = datetime.now(timezone.utc).astimezone()
+    #   span.set_attribute("app.now", now.isoformat())
   
   # CLOUDWATCH LOGS
   # def run(logger):
@@ -57,6 +59,6 @@ class HomeActivities:
     ]
 
     # HONEYCOMB
-    span.set_attribute("app.result_length", len(results))
+    # span.set_attribute("app.result_length", len(results))
 
     return results
